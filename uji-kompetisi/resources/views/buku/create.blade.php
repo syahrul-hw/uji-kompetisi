@@ -1,4 +1,10 @@
 @include('layout.header')
+{{-- Pesan validasi Tahun Terbit --}}
+@if ($errors->has('tahun_terbit'))
+    <div style="color: red; margin-bottom: 10px;">
+        {{ $errors->first('tahun_terbit') }}
+    </div>
+@endif
     <form action="{{ route('buku.store') }}" method="POST">
         @csrf
         <div class=form-group>

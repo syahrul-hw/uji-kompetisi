@@ -7,12 +7,13 @@ use Illuminate\Http\Request;
 
 class PenerbitController extends Controller
 {
-     /**
+    /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $allPenerbit = penerbit::all();
+
         return view('penerbit.index', compact('allPenerbit'));
     }
 
@@ -29,16 +30,24 @@ class PenerbitController extends Controller
      */
     public function store(Request $request)
     {
-        //buat validasi
-        $validated = $request->validate([
-            'nama_penerbit' => 'required|string|max:100',
-        ]);
+        // Validasi
+        $validated = $request->validate(
+            [
+                'nama_penerbit' => 'required|string|max:100',
+            ],
+            [
+                'nama_penerbit.required' => 'Nama penerbit wajib diisi.',
+                'nama_penerbit.string' => 'Nama penerbit harus berupa teks.',
+                'nama_penerbit.max' => 'Nama penerbit maksimal 100 karakter.',
+            ]
+        );
 
-        //simpan data
+        // Simpan data
         penerbit::create($validated);
 
-        //redirect ke index penerbit
-        return redirect()->route('penerbit.index'); 
+        // Redirect + notifikasi
+        return redirect()->route('penerbit.index')
+                         ->with('success', 'Data penerbit berhasil disimpan.');
     }
 
     /**
@@ -62,16 +71,24 @@ class PenerbitController extends Controller
      */
     public function update(Request $request, penerbit $penerbit)
     {
-        //buat validasi
-        $validated = $request->validate([
-            'nama_penerbit' => 'required|string|max:100',
-        ]);
+        // Validasi
+        $validated = $request->validate(
+            [
+                'nama_penerbit' => 'required|string|max:100',
+            ],
+            [
+                'nama_penerbit.required' => 'Nama penerbit wajib diisi.',
+                'nama_penerbit.string' => 'Nama penerbit harus berupa teks.',
+                'nama_penerbit.max' => 'Nama penerbit maksimal 100 karakter.',
+            ]
+        );
 
-        //simpan data
+        // Update data
         $penerbit->update($validated);
 
-        //redirect ke index penerbit
-        return redirect()->route('penerbit.index'); 
+        // Redirect + notifikasi
+        return redirect()->route('penerbit.index')
+                         ->with('success', 'Data penerbit berhasil diperbarui.');
     }
 
     /**
@@ -79,9 +96,11 @@ class PenerbitController extends Controller
      */
     public function destroy(penerbit $penerbit)
     {
+        // Hapus data
         $penerbit->delete();
 
-        //redirect ke index penerbit
-        return redirect()->route('penerbit.index');
+        // Redirect + notifikasi
+        return redirect()->route('penerbit.index')
+                         ->with('success', 'Data penerbit berhasil dihapus.');
     }
 }

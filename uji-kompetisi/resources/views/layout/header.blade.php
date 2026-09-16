@@ -10,6 +10,15 @@
 <body>
 <div class="container">
     <h1>Manajemen Data Buku</h1>
+    @if (Auth::check())
+        <p>Selamat datang, {{ Auth::user()->name }}!</p>
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="submit" class="tombol">Logout</button>
+        </form>
+    @else
+        <a href="{{ route('login') }}" class="tombol">Login</a>
+    @endif
     <div class="nav">
         <ul>
             <li><a href="/kategori">Kategori</a></li>

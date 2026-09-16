@@ -35,18 +35,26 @@ class BukuController extends Controller
     {
         //buat validasi
         $validated = $request->validate([
+            
             'judul' => 'required|string|max:100',
             'pengarang' => 'required|string|max:100',
             'tahun_terbit' => 'required|integer:4',
             'kategori_id' => 'required',
             'penerbit_id' => 'required',
-        ]);
+            ],
+
+            [
+            'tahun_terbit.required' => 'Tahun terbit wajib diisi.',
+            'tahun_terbit.integer' => 'Tahun terbit harus berupa angka.',
+            ]
+        );
 
         //simpan data
         buku::create($validated);
 
         //redirect ke index buku
-        return redirect()->route('buku.index'); 
+        return redirect()->route('buku.index')
+                 ->with('success', 'Data buku berhasil disimpan.');
     }
 
     /**
@@ -68,34 +76,36 @@ class BukuController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, buku $buku)
-    {
-        //buat validasi
-        $validated = $request->validate([
-            'judul' => 'required|string|max:100',
-            'pengarang' => 'required|string|max:100',
-            'tahun_terbit' => 'required|integer:4',
-            'kategori_id' => 'required',
-            'penerbit_id' => 'required',
-        ]);
+ * Update the specified resource in storage.
+ */
+public function update(Request $request, buku $buku)
+{
+    // buat validasi
+    $validated = $request->validate([
+        'judul' => 'required|string|max:100',
+        'pengarang' => 'required|string|max:100',
+        'tahun_terbit' => 'required|integer:4',
+        'kategori_id' => 'required',
+        'penerbit_id' => 'required',
+    ]);
 
-        //simpan data
-        $buku->update($validated);
+    // update data
+    $buku->update($validated);
 
-        //redirect ke index buku
-        return redirect()->route('buku.index'); 
-    }
+    // redirect ke index buku dengan notifikasi
+    return redirect()->route('buku.index')
+                     ->with('success', 'Data buku berhasil diperbarui.');
+}
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(buku $buku)
-    {
-        $buku->delete();
 
-        //redirect ke index buku
-        return redirect()->route('buku.index');
-    }
+{
+    $buku->delete();
+
+    return redirect()->route('buku.index')
+                     ->with('success', 'Data buku berhasil dihapus.');
+}
 }
