@@ -10,42 +10,63 @@ use Illuminate\Http\Request;
 class BukuController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Menampilkan semua data buku.
      */
     public function index()
     {
+        // Mengambil semua data buku beserta relasi kategori dan penerbit
         $allBuku = buku::with(['penerbit', 'kategori'])->get();
+
         return view('buku.index', compact('allBuku'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Menampilkan form untuk menambahkan buku.
      */
     public function create()
     {
+        // Mengambil semua data penerbit untuk pilihan pada form
         $penerbit = penerbit::all();
+
+        // Mengambil semua data kategori untuk pilihan pada form
         $kategori = kategori::all();
+
         return view('buku.create', compact('penerbit', 'kategori'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Menyimpan data buku baru ke database.
      */
     public function store(Request $request)
     {
-        //buat validasi
+        // =========================
+        // VALIDASI DATA BUKU
+        // =========================
         $validated = $request->validate([
-            
+
+            // Judul wajib diisi, harus berupa teks,
+            // dan maksimal 100 karakter
             'judul' => 'required|string|max:100',
+
+            // Pengarang wajib diisi, harus berupa teks,
+            // dan maksimal 100 karakter
             'pengarang' => 'required|string|max:100',
-            'tahun_terbit' => 'required|integer:4',
+
+            // Tahun terbit wajib diisi,
+            // harus berupa angka dan terdiri dari 4 digit
+            'tahun_terbit' => 'required|integer|digits:4',
+
+            // Kategori wajib dipilih
             'kategori_id' => 'required',
+
+            // Penerbit wajib dipilih
             'penerbit_id' => 'required',
             ],
 
             [
             'tahun_terbit.required' => 'Tahun terbit wajib diisi.',
             'tahun_terbit.integer' => 'Tahun terbit harus berupa angka.',
+            'tahun_terbit.digits' => 'Tahun terbit harus terdiri dari 4 digit.',
             ]
         );
 
@@ -84,9 +105,11 @@ public function update(Request $request, buku $buku)
     $validated = $request->validate([
         'judul' => 'required|string|max:100',
         'pengarang' => 'required|string|max:100',
-        'tahun_terbit' => 'required|integer:4',
+        'tahun_terbit' => 'required|integer|digits:4',
         'kategori_id' => 'required',
         'penerbit_id' => 'required',
+    ], [
+        'tahun_terbit.digits' => 'Tahun terbit harus terdiri dari 4 digit.',
     ]);
 
     // update data
@@ -101,11 +124,12 @@ public function update(Request $request, buku $buku)
      * Remove the specified resource from storage.
      */
     public function destroy(buku $buku)
+    {
+        // Menghapus data buku dari database
+        $buku->delete();
 
-{
-    $buku->delete();
-
-    return redirect()->route('buku.index')
-                     ->with('success', 'Data buku berhasil dihapus.');
+        // Kembali ke halaman daftar buku
+        return redirect()->route('buku.index')
+            ->with('success', 'Data buku berhasil dihapus.');
 }
 }
