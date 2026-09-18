@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+
 
 use App\Models\buku;
 use App\Models\kategori;

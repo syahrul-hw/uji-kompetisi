@@ -52,7 +52,7 @@
     margin: 15px 0;
     border-radius: 5px;
 ">
-    ⚠️ Buku dengan judul
+    ⚠️ Buku dengan 
     <strong>"{{ request('search') }}"</strong>
     tidak ditemukan.
 </div>
