@@ -194,7 +194,7 @@ Data tersebut dapat diproses menggunakan:
 
 ```javascript
 const bukuTerfilter = dataBuku.filter(function(buku) {
-    return buku.tahun_terbit >= 2020;
+    return buku.tahun_terbit >= 2000;
 });
 ```
 
