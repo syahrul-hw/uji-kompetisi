@@ -5,7 +5,7 @@
 Aplikasi Manajemen Perpustakaan adalah aplikasi berbasis web yang digunakan untuk mengelola data buku, kategori, dan penerbit. Aplikasi ini menyediakan fitur untuk menampilkan, menambahkan, mengedit, menghapus, mencari, dan memvalidasi data.
 
 ## Tampilan Data Buku
-[Haman Data Buku](Buku.png)
+[Haman Data Buku](vendor/Buku.png)
 
 ## Teknologi
 
